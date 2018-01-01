@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        margin: 0;
+      }
+       #map {
+        height: 100vh;
+        width: 100vw;
+       }
+    </style>
+  </head>
+  <body>
+
+    <div id="map"></div>
+    <script>
+    function initMap() {
+
+      var mapDiv = document.getElementById('map');
+
+      map = new google.maps.Map(mapDiv, {
+        center: new google.maps.LatLng(51.8368, -0.5389),
+        zoom: 6,
+        mapTypeId: 'OSM',
+        mapTypeControl: true,
+        mapTypeControlOptions: {
+          mapTypeIds: ['roadmap', 'satellite', 'OSM']
+        },
+        streetViewControl: true,
+        fullscreenControl: true,
+        tilt: 45
+        });
+
+      map.mapTypes.set("OSM", new google.maps.ImageMapType({
+        getTileUrl: function(coord, zoom) {
+          // "Wrap" x (logitude) at 180th meridian properly
+          var tilesPerGlobe = 1 << zoom;
+          var x = coord.x % tilesPerGlobe;
+          if (x < 0) x = tilesPerGlobe+x;
+          return "http://tile.openstreetmap.org/" + zoom + "/" + x + "/" + coord.y + ".png";
+        },
+        tileSize: new google.maps.Size(256, 256),
+        name: "OpenStreetMap",
+        maxZoom: 18
+      }));
+
+
+
+      var input = document.getElementById('searchTextField');
+
+    }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?callback=initMap&amp;libraries=places">
+    </script>
+  </body>
+</html>
